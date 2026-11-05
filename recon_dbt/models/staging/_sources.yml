@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: Synthetic payroll, disbursement and bank settlement data. All data is fake.
+    tables:
+      - name: entity
+      - name: employee
+      - name: payroll_run
+      - name: payroll_line
+      - name: disbursement
+      - name: bank_txn
