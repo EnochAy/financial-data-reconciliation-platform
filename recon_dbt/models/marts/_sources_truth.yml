@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: truth
+    schema: truth
+    description: Ground truth written by the data generator. Used only for validation.
+    tables:
+      - name: planted_issues

@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: fct_reconciliation
+    description: One row per payroll line with expected, sent and settled amounts and a reconciliation status.
+    columns:
+      - name: line_id
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_payroll_line')
+                field: line_id
+      - name: reconciliation_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['reconciled', 'reconciled_after_retry', 'missing_disbursement', 'duplicate_disbursement', 'amount_mismatch', 'late_settlement', 'failed_no_retry']
+
+  - name: fct_exceptions
+    description: One row per exception, traceable to a single line, disbursement or bank transaction.
+    columns:
+      - name: exception_id
+        data_tests:
+          - unique
+          - not_null
+      - name: issue_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['missing_disbursement', 'duplicate_disbursement', 'amount_mismatch', 'late_settlement', 'failed_no_retry', 'orphan_bank_txn']
+
+  - name: fct_recon_summary
+    description: Reconciliation health by entity and pay period.
+    columns:
+      - name: summary_key
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_entity
+    columns:
+      - name: entity_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_period
+    columns:
+      - name: pay_period
+        data_tests:
+          - unique
+          - not_null
+
+  - name: qa_detection_scorecard
+    description: Planted versus detected issues, by issue type.

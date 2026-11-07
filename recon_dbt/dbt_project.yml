@@ -13,11 +13,18 @@ clean-targets:
   - "target"
   - "dbt_packages"
 
+vars:
+  # A payment settled more than this many days after it was sent is "late".
+  settlement_sla_days: 3
+
 models:
   recon_dbt:
     staging:
       +materialized: view
       +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
     marts:
       +materialized: table
       +schema: marts
